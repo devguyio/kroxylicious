@@ -1,0 +1,50 @@
+#
+# Copyright Kroxylicious Authors.
+#
+# Licensed under the Apache Software License version 2.0, available at http://www.apache.org/licenses/LICENSE-2.0
+#
+
+# https://taskfile.dev
+
+version: '3'
+
+output: prefixed
+
+tasks:
+  default: mvn clean install
+
+  verify-quick:
+    aliases: [quick]
+    cmds:
+      - mvn clean verify -Dquick
+
+  process-sources:
+    deps: [license-format]
+    aliases: [fmt]
+    cmds:
+      - mvn process-sources
+
+  package: mvn clean verify -Pdist -Dquick
+
+  license-format: mvn org.commonjava.maven.plugins:directory-maven-plugin:highest-basedir@resolve-rootdir license:format
+
+  pre-commit:
+    deps: [process-sources]
+    aliases: [pc]
+
+  run:
+    deps: [package]
+    cmds:
+      - java -jar kroxylicious/target/kroxylicious-1.0-SNAPSHOT.jar
+
+  demo:
+    #deps: [package]
+    vars:
+      DOCKER_COMPOSE: 'docker-compose up'
+      JAVA_RUN: 'java -jar kroxylicious/target/kroxylicious-1.0-SNAPSHOT.jar -c kroxylicious/example-proxy-config.yml'
+    cmds:
+      - tmux new-session -s demo -d "{{.DOCKER_COMPOSE}}"
+      - tmux split-window -t demo.0 -h "{{.JAVA_RUN}}"
+      - tmux split-window -t demo.0 -v "zsh"
+      - tmux attach-session
+
