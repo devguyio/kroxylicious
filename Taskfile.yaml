@@ -38,7 +38,7 @@ tasks:
       - java -jar kroxylicious/target/kroxylicious-1.0-SNAPSHOT.jar
 
   demo:
-    #deps: [package]
+    deps: [package]
     vars:
       DOCKER_COMPOSE: 'docker-compose up'
       JAVA_RUN: 'java -jar kroxylicious/target/kroxylicious-1.0-SNAPSHOT.jar -c kroxylicious/example-proxy-config.yml'
