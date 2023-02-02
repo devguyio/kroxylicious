@@ -6,12 +6,14 @@
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="kroxylicious.main" />
         <module name="integrationtests.main" />
-        <module name="kroxylicious-krpc-plugin.test" />
         <module name="kroxylicious-krpc-plugin.main" />
-        <module name="integrationtests.test" />
         <module name="kroxylicious.test" />
+        <module name="kroxylicious" />
+        <module name="kroxylicious-krpc-plugin.test" />
+        <module name="integrationtests.test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

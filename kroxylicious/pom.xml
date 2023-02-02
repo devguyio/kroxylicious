@@ -348,5 +348,30 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>containerize</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <configuration>
+                            <from>
+                                <image>openjdk:11-jre</image>
+                            </from>
+                            <to>
+                                <image>kroxylicious</image>
+                            </to>
+                            <container>
+                                <ports>
+                                    <port>9192</port>
+                                </ports>
+                            </container>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>

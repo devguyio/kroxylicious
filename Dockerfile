@@ -7,10 +7,9 @@
 # This docker file is only intended for development purposes
 ARG BUILD_IMAGE=maven:3.8-openjdk-17
 ARG RUNTIME_IMAGE=openjdk:11-jdk-slim
-LABEL org.opencontainers.image.source="https://github.com/kroxylicious/kroxylicious.git"
-
 # Maven dependencies stage. Allows for caching pulled deps.
 FROM ${BUILD_IMAGE} AS dependencies
+
 
 WORKDIR /build
 
@@ -49,5 +48,10 @@ WORKDIR /app
 COPY --from=build /build/kroxylicious/target/kroxylicious-1.0-SNAPSHOT-jar-with-dependencies.jar kroxylicious-1.0-SNAPSHOT.jar
 COPY --from=build /build/kroxylicious/example-proxy-config.yml proxy-config.yml
 
+LABEL org.opencontainers.image.source="https://github.com/kroxylicious/kroxylicious.git"
+
+EXPOSE 9192
+
 ENTRYPOINT ["java", "-jar", "kroxylicious-1.0-SNAPSHOT.jar"]
+# Splitting the args in a CMD so that it can be overridden from docker command.
 CMD ["-c", "proxy-config.yml"]

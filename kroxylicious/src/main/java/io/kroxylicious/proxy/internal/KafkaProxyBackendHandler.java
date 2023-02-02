@@ -8,6 +8,7 @@ package io.kroxylicious.proxy.internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.instrument.Metrics;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -46,6 +47,7 @@ public class KafkaProxyBackendHandler extends ChannelInboundHandlerAdapter {
     // Called when the outbound channel is active
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Metrics.counter("incoming_connections.total", "dummy_k", "dummy_v").increment();
         LOGGER.trace("Channel active {}", ctx);
         super.channelActive(ctx);
         this.frontendHandler.outboundChannelActive(ctx);
